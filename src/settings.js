@@ -11,5 +11,9 @@ module.exports = {
   /**
    * 备案号
    */
-  caseNumber: '粤ICP备 - 20042597号'
+  caseNumber: '粤ICP备 - 20042597号',
+  /**
+   * http请求超时时间 单位毫秒
+   */
+  timeout: 1200000
 }
