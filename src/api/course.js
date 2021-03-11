@@ -22,4 +22,20 @@ export function courseList(cid) {
   })
 }
 
-export default { carousel, newPublish, courseList }
+export function course(id) {
+  return request({
+    url: '/course',
+    method: 'get',
+    params: { Str: id }
+  })
+}
+
+export function relatedCourse(id) {
+  return request({
+    url: '/related-course',
+    method: 'get',
+    params: { Str: id }
+  })
+}
+
+export default { carousel, newPublish, courseList, course }

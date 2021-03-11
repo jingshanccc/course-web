@@ -27,7 +27,7 @@ export default {
   }
 }
 </script>
-<style>
+<style scoped>
 .navbar{
   height: 50px;
   border-bottom: 1px solid rgba(34, 36, 38, .15);
