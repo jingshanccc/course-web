@@ -16,6 +16,8 @@
   </el-card>
 </template>
 <script>
+import { openHref } from '@/utils'
+
 export default {
   name: 'CoursePane',
   props: {
@@ -26,13 +28,7 @@ export default {
   },
   methods: {
     courseDetail(id) {
-      const routeData = this.$router.resolve({
-        name: 'CourseDetail',
-        query: {
-          id: id
-        }
-      })
-      window.open(routeData.href, '_blank')
+      openHref(this.$router, 'CourseDetail', { id: id })
     }
   }
 }

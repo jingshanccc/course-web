@@ -2,7 +2,7 @@
   <div>
     <div class="bg" :style="{ backgroundImage: 'url('+ course.image + ')' }" />
     <div class="header">
-      <el-page-header content="课程详情" title="首页" @back="goBack" />
+      <el-page-header content="课程详情" title="首页" @back="$router.push({name: 'Course'})" />
       <h1>{{ course.name }}</h1>
       <div style="cursor: pointer; width: 200px; float: left; height: 80px" @click="teacherIndex(course.teacher.id)">
         <el-avatar :src="course.teacher.image" :size="55" style="float: left; margin-right: 10px" />
@@ -46,7 +46,7 @@
           <el-row v-for="item in relatedCourses" v-show="item.id !== course.id" :key="item.id" :gutter="5">
             <el-col :span="8"><el-image :src="item.image" /></el-col>
             <el-col :span="16" class="teacher-info">
-              <span class="title">{{ item.name }}</span>
+              <span class="title" @click="courseDetail(item.id)">{{ item.name }}</span>
               <span class="info">{{ item.level }} · <i class="el-icon-user" /> {{ item.enroll ? item.enroll : 0 }}</span>
             </el-col>
           </el-row>
@@ -56,7 +56,7 @@
   </div>
 </template>
 <script>
-import { formatSecond } from '@/utils'
+import { formatSecond, openHref } from '@/utils'
 import { course, relatedCourse } from '@/api/course'
 
 export default {
@@ -76,11 +76,6 @@ export default {
   },
   methods: {
     formatSecond,
-    goBack() {
-      this.$router.push({
-        name: 'Course'
-      })
-    },
     getCourse() {
       course(this.$route.query.id).then(res => {
         if (res.success) {
@@ -99,7 +94,6 @@ export default {
       })
     },
     getRelatedCourse() {
-      console.log(this.course.id)
       relatedCourse(this.course.id).then(res => {
         if (res.success) {
           this.relatedCourses = res.content.rows
@@ -107,22 +101,13 @@ export default {
       })
     },
     teacherIndex(id) {
-      const routeData = this.$router.resolve({
-        name: 'Teacher',
-        query: {
-          id: id
-        }
-      })
-      window.open(routeData.href, '_blank')
+      openHref(this.$router, 'Teacher', { id: id })
     },
     startLearn(sectionId) {
-      const routeData = this.$router.resolve({
-        name: 'Learning',
-        query: {
-          id: sectionId
-        }
-      })
-      window.open(routeData.href, '_blank')
+      openHref(this.$router, 'Learning', { id: sectionId })
+    },
+    courseDetail(id) {
+      openHref(this.$router, 'CourseDetail', { id: id })
     }
   }
 }

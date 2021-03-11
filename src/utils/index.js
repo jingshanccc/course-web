@@ -1,3 +1,16 @@
+/**
+ * 通过命名路由打开新页面
+ * @param router 调用方法页面的router对象
+ * @param name 新页面路由名
+ * @param data 携带数据
+ */
+export function openHref(router, name, data) {
+  const routeData = router.resolve({
+    name: name,
+    query: data
+  })
+  window.open(routeData.href, '_blank')
+}
 
 /**
  * 时长格式化

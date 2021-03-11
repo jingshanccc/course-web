@@ -95,12 +95,12 @@ export default {
   },
   created() {
     this.getCategories()
-    this.getCourses(this.$route.query.cid)
   },
   methods: {
     getCategories() { // 获取课程分类
       allCategories().then(res => {
         if (res.success) {
+          let isChild = false
           const data = res.content.rows
           data.forEach(category => {
             if (category.parent === CategoryParent) {
@@ -112,7 +112,8 @@ export default {
             } else {
               this.categories.children.push(category)
               if (category.id === this.$route.query.cid) {
-                this.children = category.id
+                this.child = category.id
+                isChild = true
               }
             }
           })
@@ -123,8 +124,14 @@ export default {
               }
             })
           })
+          // 赋初始值
           this.directions = this.categories.parents
           this.types = this.categories.children
+          if (isChild) {
+            this.changeCategory(this.child)
+          } else {
+            this.changeDirection(this.parent)
+          }
         } else {
           this.$message({
             message: res.message,
