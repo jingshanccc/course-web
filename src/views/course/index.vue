@@ -39,7 +39,7 @@
     <div class="course">
       <el-tabs v-model="courseTab" @tab-click="handleCourseTab">
         <el-tab-pane v-for="item in ChargeEnum" :key="item" :label="item" :name="item">
-          <course-pane :courses="shownCourses" />
+          <course-pane :courses="shownCourses" :course-id="''" />
         </el-tab-pane>
       </el-tabs>
     </div>

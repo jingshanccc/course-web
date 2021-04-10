@@ -38,4 +38,12 @@ export function relatedCourse(id) {
   })
 }
 
+export function downloadCourseContent(id) {
+  return request({
+    url: '/course-content',
+    method: 'get',
+    params: { Str: id }
+  })
+}
+
 export default { carousel, newPublish, courseList, course }

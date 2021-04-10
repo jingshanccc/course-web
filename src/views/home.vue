@@ -18,7 +18,7 @@
       </el-col>
     </div>
     <img class="title" :src="title" alt="新上好课">
-    <course-pane ref="coursePane" :courses="newPublishCourse" />
+    <course-pane ref="coursePane" :courses="newPublishCourse" :course-id="''" />
   </div>
 </template>
 <script>

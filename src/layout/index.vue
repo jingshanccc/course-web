@@ -4,7 +4,7 @@
     <div class="main-container">
       <transition name="fade-transform" mode="out-in">
         <keep-alive>
-          <router-view />
+          <router-view :key="$route.path" />
         </keep-alive>
       </transition>
     </div>

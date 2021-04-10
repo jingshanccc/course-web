@@ -24,6 +24,14 @@ export const RouterMap = [
         path: 'course/detail',
         name: 'CourseDetail',
         component: (resolve) => require(['@/views/course/detail'], resolve)
+      },
+      {
+        path: 'learn/:randomCode',
+        name: 'Learning',
+        component: (resolve) => require(['@/views/learn/index'], resolve),
+        meta: {
+          notKeep: true
+        }
       }
     ]
   }

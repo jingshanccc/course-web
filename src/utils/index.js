@@ -3,13 +3,18 @@
  * @param router 调用方法页面的router对象
  * @param name 新页面路由名
  * @param data 携带数据
+ * @param isQuery 是否以query方式传参
  */
-export function openHref(router, name, data) {
-  const routeData = router.resolve({
-    name: name,
-    query: data
-  })
-  window.open(routeData.href, '_blank')
+export function openHref(router, name, data, isQuery = true) {
+  const route = { name: name }
+  if (isQuery) {
+    route.query = data
+    const routeData = router.resolve(route)
+    window.open(routeData.href, '_blank')
+  } else {
+    route.params = data
+    router.push(route)
+  }
 }
 
 /**

@@ -15,5 +15,10 @@ module.exports = {
   /**
    * http请求超时时间 单位毫秒
    */
-  timeout: 1200000
+  timeout: 1200000,
+
+  /**
+   * 输出文件目录
+   */
+  filePath: '../store/'
 }
