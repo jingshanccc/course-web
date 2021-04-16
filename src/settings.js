@@ -20,5 +20,17 @@ module.exports = {
   /**
    * 输出文件目录
    */
-  filePath: '../store/'
+  filePath: '../store/',
+  /**
+   * token键
+   */
+  TokenKey: 'micah-admin-token',
+  /**
+   * refresh token键
+   */
+  RefreshTokenKey: 'micah-admin-refresh',
+  /**
+   * 记住密码状态下的token在Cookie过期时间，单位天
+   */
+  tokenCookieExpires: 1
 }
