@@ -66,7 +66,7 @@ export default {
   },
   computed: {
     realCourses() {
-      if (this.courseId !== '') {
+      if (this.courses.length === 0) {
         return this.relatedCourses
       } else {
         return this.courses

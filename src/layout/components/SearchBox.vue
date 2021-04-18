@@ -3,7 +3,7 @@
     <el-autocomplete
       v-model="searchVal"
       :fetch-suggestions="querySearch"
-      placeholder="搜索你想看的视频"
+      placeholder="搜索你想看的课程"
       clearable
       suffix-icon="el-icon-search"
       size="medium"

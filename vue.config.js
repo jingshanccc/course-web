@@ -48,5 +48,18 @@ module.exports = {
         '@': resolve('src')
       }
     }
+  },
+  chainWebpack(config) {
+    config.module.rule('svg').exclude.add(resolve('src/assets/icons')).end()
+    config.module.rule('icons').test(/\.svg$/).include.add(resolve('src/assets/icons')).end().use('svg-sprite-loader').loader('svg-sprite-loader').options({
+      symbolId: 'icon-[name]'
+    }).end()
+    config.module.rule('worker').test(/\.worker\.js$/).use('worker').loader('worker-loader').options({
+      inline: 'fallback'
+    }).end()
+    // 解决 worker js 文件热更新失败
+    config.module.rule('js').exclude.add(/\.worker\.js$/)
+    // 解决 window is undefined 因为worker中没有window、dom对象
+    config.output.globalObject('this')
   }
 }

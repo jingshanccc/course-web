@@ -26,6 +26,11 @@ export const RouterMap = [
         component: (resolve) => require(['@/views/course/detail'], resolve)
       },
       {
+        path: 'user',
+        name: 'User',
+        component: (resolve) => require(['@/views/user/index'], resolve)
+      },
+      {
         path: 'learn/:randomCode',
         name: 'Learning',
         component: (resolve) => require(['@/views/learn/index'], resolve),

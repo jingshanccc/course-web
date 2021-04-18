@@ -61,7 +61,7 @@ export function register(data) {
  */
 export function getUserInfo() {
   return request({
-    url: '/admin/user/info',
+    url: 'user/info',
     method: 'POST'
   })
 }
@@ -71,10 +71,42 @@ export function getUserInfo() {
  */
 export function logout(token, refreshToken) {
   return request({
-    url: '/oauth/logout',
+    baseURL: process.env.VUE_APP_AUTH_API,
+    url: 'user/logout',
     method: 'get',
     params: {
       Str: token + '$' + refreshToken
     }
+  })
+}
+
+export function saveUser(user) {
+  return request({
+    url: 'user/save',
+    method: 'POST',
+    data: user
+  })
+}
+
+export function courses(id) {
+  return request({
+    url: 'user/courses?Str=' + id,
+    method: 'GET'
+  })
+}
+
+export function updatePass(data) {
+  return request({
+    url: 'user/update-pass',
+    method: 'POST',
+    data
+  })
+}
+
+export function updateEmail(data) {
+  return request({
+    url: 'user/update-email',
+    method: 'POST',
+    data
   })
 }

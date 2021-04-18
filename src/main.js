@@ -8,6 +8,7 @@ import router from './router/router'
 import './router/index'
 import Print from 'vue-iframe-print'
 
+import './assets/icons'
 import './assets/styles/index.scss'
 
 Vue.use(Element)

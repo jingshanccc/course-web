@@ -10,8 +10,26 @@
       <el-col :sm="14" class="search">
         <search-box />
       </el-col>
-      <el-col :sm="5" class="user-info">
-        <span @click="loginRegister.visible = true; getImageCode()">登录/注册</span>
+      <el-col :sm="5">
+        <el-dropdown v-if="isLogin" class="avatar-container hover-effect" placement="bottom-start">
+          <div class="avatar-wrapper">
+            <img alt="头像" :src="userInfo.photo ? userInfo.photo : Avatar" class="user-avatar">
+            <i class="el-icon-caret-bottom" />
+          </div>
+          <el-dropdown-menu slot="dropdown">
+            <router-link to="/user">
+              <el-dropdown-item>
+                个人中心
+              </el-dropdown-item>
+            </router-link>
+            <span style="display: block" @click="logout">
+              <el-dropdown-item>
+                退出登录
+              </el-dropdown-item>
+            </span>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <span v-else class="user" @click="loginRegister.visible = true; getImageCode()">登录/注册</span>
       </el-col>
       <el-dialog :visible.sync="loginRegister.visible" width="25%" append-to-body center>
         <el-form
@@ -84,11 +102,11 @@
         </div>
       </el-dialog>
     </el-row>
-    <!--防止下面的盒子上移动，nav-bar脱离了标准流-->
-    <div style="height: 50px;" />
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
+import Avatar from '@/assets/images/avatar.gif'
 import SearchBox from '@/layout/components/SearchBox'
 import { validEmail } from '@/utils/validate'
 import { sendEmailCode, getImgCode, register } from '@/api/user'
@@ -109,6 +127,8 @@ export default {
       }
     }
     return {
+      isLogin: true,
+      Avatar,
       loginRegister: {
         visible: false,
         loading: false,
@@ -135,6 +155,11 @@ export default {
         }
       }
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
   },
   methods: {
     resetForm() {
@@ -237,12 +262,15 @@ export default {
           })
         }
       })
+    },
+    logout() {
+      this.$message('logout')
     }
   }
 }
 </script>
-<style scoped>
-.navbar{
+<style lang="scss" scoped>
+.navbar {
   height: 50px;
   border-bottom: 1px solid rgba(34, 36, 38, .15);
   box-shadow: 0 1px 2px 0 rgba(34, 36, 38, .15);
@@ -251,17 +279,14 @@ export default {
   top: 0;
   left: 0;
   right: 0;
-  padding-left: 6%;
-  padding-right: 6%;
+  padding: 0 6%;
+  margin-bottom: 5px;
   background-color: #ffffff;
   z-index: 9;
-}
-.right {
-  word-break: keep-all; /* 不换行 */
-  white-space: nowrap; /* 不换行 */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  img {
+    cursor: pointer;
+    vertical-align: middle
+  }
 }
 
 .title {
@@ -273,12 +298,12 @@ export default {
 }
 
 .title span {
+  line-height: 45px;
   margin-left: 5px;
 }
 
 .logo {
   width: 30px;
-  position: relative;
   top: 5px;
 }
 
@@ -286,31 +311,51 @@ export default {
   text-align: center;
   padding-top: 6px;
 }
-.user-info {
+
+.user {
+  line-height: 45px;
   cursor: pointer;
-  word-break: keep-all; /* 不换行 */
-  white-space: nowrap; /* 不换行 */
 }
 
 .form {
   border-radius: 6px;
   background: #ffffff;
   padding: 25px 25px 5px 25px;
+  .title {
+    text-align: center;
+    color: #707070;
+  }
 }
 
-.form .title {
-  text-align: center;
-  color: #707070;
-}
 .login-code {
   width: 33%;
   display: inline-block;
   height: 38px;
   float: right;
+  img {
+    cursor: pointer;
+    vertical-align: middle
+  }
 }
-img {
+
+.avatar-container {
   cursor: pointer;
-  vertical-align: middle
+  .avatar-wrapper {
+    margin-top: 5px;
+    position: relative;
+
+    .user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+    }
+
+    .el-icon-caret-bottom {
+      position: relative;
+      right: -10px;
+      font-size: 12px;
+    }
+  }
 }
 
 </style>

@@ -1,4 +1,11 @@
 /**
+ * 验证是否为外部路径
+ */
+export function isExternal(path) {
+  return /^(https?:|mailto:|tel:)/.test(path)
+}
+
+/**
  * 验证邮箱合法性
  */
 export function validEmail(email) {

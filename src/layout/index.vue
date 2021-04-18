@@ -28,7 +28,7 @@ export default {
 <style>
 .main-container{
   min-width: 1000px;
-  padding: 20px 60px 45px 6%;
+  padding: 50px 60px 45px 6%;
   background-color: #e7eaec;
 }
 </style>
