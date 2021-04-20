@@ -3,6 +3,7 @@ import App from './App.vue'
 import Element from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 
+import axios from 'axios'
 import store from './store'
 import router from './router/router'
 import './router/index'
@@ -16,6 +17,7 @@ Vue.use(Print)
 
 Vue.config.productionTip = false
 
+Vue.prototype.axios = axios
 new Vue({
   store,
   router,

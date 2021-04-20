@@ -82,7 +82,7 @@ import { validEmail } from '@/utils/validate'
 import Upload from '@/components/Upload'
 import UpdatePass from '@/views/user/UpdatePass'
 import UpdateEmail from '@/views/user/UpdateEmail'
-import { saveUser, courses } from '@/api/user'
+import { saveUser, courses, uploadAvatar } from '@/api/user'
 import { newPublish } from '@/api/course'
 import CoursePane from '@/components/CoursePane'
 
@@ -161,8 +161,7 @@ export default {
     handleClick(tab, event) {
     },
     cropUploadSuccess(data) {
-      this.userInfo.photo = data.path
-      saveUser(this.userInfo).then(() => {
+      uploadAvatar(data.path).then(() => {
         // 需要更新 缓存中的userinfo
         this.$store.dispatch('UserInfo').then(() => {})
       })

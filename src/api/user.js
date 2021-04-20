@@ -110,3 +110,23 @@ export function updateEmail(data) {
     data
   })
 }
+
+export function uploadAvatar(photo) {
+  return request({
+    url: 'user/upload-avatar',
+    method: 'POST',
+    data: {
+      Str: photo
+    }
+  })
+}
+
+export function addCourse(id) {
+  return request({
+    url: 'user/add-course',
+    method: 'POST',
+    data: {
+      Str: id
+    }
+  })
+}

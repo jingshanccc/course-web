@@ -99,11 +99,6 @@ export default {
   top:0;
   color: #f8fafc;
 }
-.teacher-info {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-}
 .course-info {
   height: 80px;
   line-height: 40px;
