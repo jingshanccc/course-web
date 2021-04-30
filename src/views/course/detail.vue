@@ -9,7 +9,8 @@
         <li><span><strong>难度</strong> {{ course.level }}</span></li>
         <li><span><strong>时长</strong> {{ formatSecond(course.time, true) }}</span></li>
         <li><span><strong>学习人数</strong> {{ course.enroll ? course.enroll : 0 }}</span></li>
-        <el-button type="danger" style="float: right" round icon="el-icon-thumb" @click.native="$refs.sectionPane.startLearn">开始学习</el-button>
+        <span style="float: right">{{ learnInfoText }}</span>
+        <el-button type="danger" style="float: right" round icon="el-icon-thumb" @click.native="$refs.sectionPane.startLearn(-1)">{{ buttonText }}</el-button>
       </ul>
     </div>
     <el-divider />
@@ -33,6 +34,8 @@
 <script>
 import { formatSecond } from '@/utils'
 import { course } from '@/api/course'
+import { courseInfo } from '@/api/user'
+import { mapGetters } from 'vuex'
 import SectionPane from '@/components/SectionPane'
 import TeacherInfo from '@/components/TeacherInfo'
 import CoursePane from '@/components/CoursePane'
@@ -50,8 +53,15 @@ export default {
         teacher: {},
         chapters: []
       },
-      activeTab: 'chapter'
+      activeTab: 'chapter',
+      buttonText: '开始学习',
+      learnInfoText: ''
     }
+  },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
   },
   created() {
     this.course.id = this.$route.query.id
@@ -60,9 +70,22 @@ export default {
   methods: {
     formatSecond,
     getCourse() {
+      let learnInfo = []
+      if (this.userInfo.id !== '') {
+        courseInfo(this.course.id).then(res => {
+          if (res.success && res.content.str) {
+            learnInfo = res.content.str.split(' ')
+            this.learnInfoText = '上次学到：第' + learnInfo[0] + '章第' + learnInfo[1] + '节'
+            this.buttonText = '继续学习'
+          }
+        })
+      }
       course(this.course.id).then(res => {
         if (res.success) {
           this.course = res.content
+          if (learnInfo !== []) {
+            this.course.learnInfo = learnInfo
+          }
           this.course.chapters.forEach(chapter => {
             chapter.sections = []
             this.course.sections.forEach(section => {

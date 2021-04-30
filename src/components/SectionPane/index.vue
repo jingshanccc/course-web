@@ -5,7 +5,7 @@
       <ul class="video">
         <li v-for="(item, s) in chapter.sections" :key="item.id" @click="startLearn(c, s)">
           <i class="el-icon-video-play" /> {{ chapter.sort }}-{{ item.sort }} {{ item.title }} ({{ formatSecond(item.time) }})
-          <el-button v-if="learnBtn" type="danger" size="mini" round>开始学习</el-button>
+          <el-button v-if="learnBtn" type="danger" size="mini" round>{{ buttonName(c, s) }}</el-button>
         </li>
       </ul>
     </div>
@@ -80,12 +80,15 @@ export default {
      * @param s section 下标
      */
     startLearn(c, s = 0) {
-      if (typeof c === 'object') {
-        c = 0
+      let charge
+      if (c === -1) {
+        charge = this.course.charge
+      } else {
+        charge = this.course.chapters[c].sections[s].charge
       }
       this.routerData = { course: this.course, chapter: c, section: s, randomCode: new Date().getTime() }
       // 若章节免费则不登陆也可观看，付费则检查登陆状态，未登陆则弹出登陆/注册框，已登陆则进行购买课程确认
-      if (this.course.chapters[c].sections[s].charge === '免费') {
+      if (charge === '免费') {
         if (this.userInfo.id !== '') { // 已登录 记录进"我的课程"
           this.addCourse()
         } else {
@@ -99,6 +102,13 @@ export default {
           this.$refs.loginRegister.visible = true
           this.$refs.loginRegister.getImageCode()
         }
+      }
+    },
+    buttonName(c, s) {
+      if (this.course.learnInfo) {
+        return c + 1 === parseInt(this.course.learnInfo[0]) && s + 1 === parseInt(this.course.learnInfo[1]) ? '继续学习' : '开始学习'
+      } else {
+        return '开始学习'
       }
     }
   }

@@ -130,3 +130,33 @@ export function addCourse(id) {
     }
   })
 }
+
+export function courseInfo(id) {
+  return request({
+    url: 'user/course-info',
+    method: 'POST',
+    data: {
+      Str: id
+    }
+  })
+}
+
+export function saveLearnInfo(id, info) {
+  return request({
+    url: 'user/save-learn-info',
+    method: 'POST',
+    data: {
+      Rows: [id, info]
+    }
+  })
+}
+
+export function experience(id) {
+  return request({
+    url: 'user/experience',
+    method: 'POST',
+    data: {
+      Str: id
+    }
+  })
+}

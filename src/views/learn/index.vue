@@ -11,7 +11,7 @@
         </el-menu>
       </el-col>
       <el-col :span="16">
-        <player />
+        <player ref="player" :player-options="options" />
       </el-col>
       <el-col :span="6">
         <div class="teacher">
@@ -43,6 +43,7 @@
 </template>
 <script>
 import { downloadCourseContent } from '@/api/course'
+import { saveLearnInfo, experience } from '@/api/user'
 import Player from '@/components/Player'
 import SectionPane from '@/components/SectionPane'
 import TeacherInfo from '@/components/TeacherInfo'
@@ -62,7 +63,8 @@ export default {
       section: {},
       courseContent: '',
       drawer: false,
-      contentDrawer: false
+      contentDrawer: false,
+      options: {}
     }
   },
   created() {
@@ -72,6 +74,14 @@ export default {
     this.course = this.$route.params.course
     this.chapter = this.course.chapters[this.$route.params.chapter]
     this.section = this.chapter.sections[this.$route.params.section]
+    this.options.sources = [{
+      type: 'video/mp4',
+      src: this.section.video
+    }]
+    this.startRecord()
+  },
+  destroyed() {
+    this.clearRecord()
   },
   methods: {
     getCourseContent() {
@@ -83,6 +93,25 @@ export default {
         })
       }
       this.contentDrawer = true
+    },
+    startRecord() {
+      this.timer = setInterval(function() {
+        this.addExperience()
+      }, 100000)
+    },
+    clearRecord() {
+      clearInterval(this.timer)
+      saveLearnInfo(this.course.id, this.chapter.sort + ' ' + this.section.sort + ' ' + this.$refs.player.curTime).then().catch()
+    },
+    addExperience() {
+      // 记录学习进度和发放积分分开 由于存在快进快退因此经验参照页面停留时间、积分在自动切换下一节时发放
+      // 学习进度在离开页面/章节切换时记录
+      console.log(this.$refs.player.curTime)
+      experience(this.course.id).then(res => {
+        if (res.success) {
+          this.$message('经验+10')
+        }
+      })
     }
   }
 }
