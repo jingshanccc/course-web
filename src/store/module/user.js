@@ -7,15 +7,7 @@ const user = {
   state: {
     token: getToken(),
     refreshToken: '',
-    userInfo: {
-      'id': 'IX7UQht2',
-      'name': 'test1',
-      'login_name': 'test1',
-      'email': 'test1@member.com',
-      'learning_time': 189265,
-      'integral': 1888,
-      'sex': '男'
-    }
+    userInfo: {}
   },
   mutations: {
     SET_TOKEN: (state, token, refreshToken) => {

@@ -6,14 +6,14 @@ import { encrypt } from '@/utils/rsa'
  */
 export function authorize(loginUser) {
   return request({
-    baseURL: process.env.VUE_APP_AUTH_API,
-    url: 'authorize',
+    baseURL: process.env.VUE_APP_BASE_API,
+    url: 'oauth/authorize',
     method: 'get',
     params: {
       'response_type': 'code',
       'client_id': process.env.VUE_APP_CLIENT_ID,
       'scope': 'admin',
-      'redirect_uri': process.env.VUE_APP_AUTH_API + 'redirect',
+      'redirect_uri': process.env.VUE_APP_BASE_API + 'oauth/redirect',
       // 'state': '' 自定义值 可防伪造攻击
       'state': process.env.VUE_APP_CLIENT_ID,
       ...loginUser,
@@ -37,8 +37,8 @@ export function sendEmailCode(email) {
  */
 export function getImgCode() {
   return request({
-    baseURL: process.env.VUE_APP_AUTH_API,
-    url: 'captcha/image-code',
+    baseURL: process.env.VUE_APP_BASE_API,
+    url: 'oauth/captcha/image-code',
     method: 'get'
   })
 }
@@ -71,8 +71,8 @@ export function getUserInfo() {
  */
 export function logout(token, refreshToken) {
   return request({
-    baseURL: process.env.VUE_APP_AUTH_API,
-    url: 'user/logout',
+    baseURL: process.env.VUE_APP_BASE_API,
+    url: 'oauth/logout',
     method: 'get',
     params: {
       Str: token + '$' + refreshToken

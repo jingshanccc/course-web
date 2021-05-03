@@ -25,7 +25,7 @@
               <li><div style="height: 100%"><svg-icon icon-class="user" /> 登录账号<div class="user-right">{{ userInfo.login_name }}</div> </div> </li>
               <li><svg-icon icon-class="menu" /> 用户昵称 <div class="user-right">{{ userInfo.name }}</div></li>
               <li><svg-icon icon-class="email" /> 用户邮箱 <div class="user-right">{{ userInfo.email }}</div></li>
-              <li><svg-icon icon-class="integral" /> 我的积分 <div class="user-right">{{ userInfo.integral }}</div></li>
+              <li><svg-icon icon-class="integral" /> 我的积分 <div class="user-right">{{ userInfo.integral ? userInfo.integral : 0 }}</div></li>
               <li><svg-icon icon-class="time" /> 学习时长 <div class="user-right">{{ formatSecond(userInfo.learning_time, true) }}</div></li>
               <li>
                 <svg-icon icon-class="security" /> 安全设置

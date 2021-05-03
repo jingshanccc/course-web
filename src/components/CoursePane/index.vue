@@ -1,5 +1,5 @@
 <template>
-  <el-row v-if="!isVertical && realCourses.length > 0" style="margin-top: 20px;" :gutter="20">
+  <el-row v-if="!isVertical && realCourses && realCourses.length > 0" style="margin-top: 20px;" :gutter="20">
     <el-col v-for="course in realCourses" :key="course.id" :span="6">
       <el-card :body-style="{ padding: '0px' }" shadow="always" @click.native="courseDetail(course.id)">
         <el-image :src="course.image" fit="contain" alt="课程封面" style="border-radius: 4px; box-shadow: 0 4px 6px rgba(0, 0, 0, .12)" />
@@ -11,7 +11,7 @@
       </el-card>
     </el-col>
   </el-row>
-  <div v-else-if="isVertical && realCourses.length > 0" class="related-course" :style="styles">
+  <div v-else-if="isVertical && realCourses && realCourses.length > 0" class="related-course" :style="styles">
     <div class="text"><strong>{{ text }}</strong></div>
     <el-row v-for="item in realCourses" v-show="item.id !== courseId" :key="item.id" :gutter="5" class="course">
       <el-col :span="9"><el-image :src="item.image" /></el-col>

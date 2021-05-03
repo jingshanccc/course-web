@@ -11,7 +11,7 @@
         <search-box />
       </el-col>
       <el-col :sm="5">
-        <el-dropdown v-if="isLogin" class="avatar-container hover-effect" placement="bottom-start">
+        <el-dropdown v-if="userInfo.id" class="avatar-container hover-effect" placement="bottom-start">
           <div class="avatar-wrapper">
             <img alt="头像" :src="userInfo.photo ? userInfo.photo : Avatar" class="user-avatar">
             <i class="el-icon-caret-bottom" />
@@ -40,6 +40,7 @@ import { mapGetters } from 'vuex'
 import Avatar from '@/assets/images/avatar.gif'
 import SearchBox from '@/layout/components/SearchBox'
 import LoginRegister from '@/components/LoginRegister'
+import Cookies from 'js-cookie'
 
 export default {
   name: 'NavBar',
@@ -49,7 +50,6 @@ export default {
   },
   data() {
     return {
-      isLogin: true,
       Avatar
     }
   },
@@ -58,9 +58,35 @@ export default {
       'userInfo'
     ])
   },
+  created() {
+    this.point()
+  },
   methods: {
+    point() {
+      const point = Cookies.get('point') !== undefined
+      if (point) {
+        this.$notify({
+          title: '提示',
+          message: '当前登录状态已过期，请重新登录！',
+          type: 'warning',
+          duration: 5000
+        })
+        Cookies.remove('point')
+      }
+    },
     logout() {
-      this.$message('logout')
+      this.$confirm('确定注销并退出系统吗？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.doLogout()
+      })
+    },
+    doLogout() {
+      this.$store.dispatch('Logout').then(() => {
+        location.reload()
+      })
     }
   }
 }

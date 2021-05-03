@@ -197,6 +197,7 @@ export default {
             this.loading = false
             this.visible = false
             this.$message('登陆成功')
+            this.$store.dispatch('UserInfo').then(() => {}).catch(() => {})
             this.afterLogin()
           }).catch(() => {
             this.loading = false

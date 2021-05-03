@@ -1,14 +1,20 @@
 import axios from 'axios'
 import Setting from '@/settings'
 import { Notification } from 'element-ui'
+import { getToken } from '@/utils/auth'
+import store from '@/store'
+import Cookies from 'js-cookie'
 
 const service = axios.create({
-  baseURL: process.env.NODE_ENV === 'development' ? process.env.VUE_APP_BASE_API : '/',
+  baseURL: process.env.NODE_ENV === 'development' ? process.env.VUE_APP_WEB_API : '/',
   timeout: Setting.timeout
 })
 
 service.interceptors.request.use(
   config => {
+    if (getToken()) {
+      config.headers['Authorization'] = 'Bearer ' + getToken()
+    }
     config.headers['Content-Type'] = 'application/json'
     return config
   },
@@ -35,6 +41,13 @@ service.interceptors.response.use(
       return Promise.reject(err)
     }
     if (code) {
+      if (code === 401) {
+        store.dispatch('Logout').then(() => {
+          // 用户登录界面提示
+          Cookies.set('point', 401)
+          location.reload()
+        })
+      }
       const errorMsg = err.response.data.message
       if (errorMsg !== undefined) {
         Notification.error({

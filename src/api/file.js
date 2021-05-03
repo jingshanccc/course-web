@@ -1,8 +1,9 @@
 import request from '@/api/request'
-
+const api = process.env.VUE_APP_BASE_API + 'file'
 export function upload(data) {
   return request({
-    url: '/user/upload',
+    baseURL: api,
+    url: '/upload',
     method: 'POST',
     data
   })
@@ -10,7 +11,8 @@ export function upload(data) {
 
 export function check(key) {
   return request({
-    url: '/user/check',
+    baseURL: api,
+    url: '/check',
     method: 'GET',
     params: {
       Str: key
@@ -20,7 +22,8 @@ export function check(key) {
 
 export function uploadShard(data, onProgress = e => e, source) {
   return request({
-    url: '/user/upload_shard',
+    baseURL: api,
+    url: '/upload_shard',
     method: 'POST',
     headers: { 'content-type': 'application/x-www-form-urlencoded' },
     onUploadProgress: onProgress,
@@ -31,7 +34,8 @@ export function uploadShard(data, onProgress = e => e, source) {
 
 export function verifyUpload(key) {
   return request({
-    url: '/user/verify_upload',
+    baseURL: api,
+    url: '/verify_upload',
     method: 'GET',
     params: {
       Str: key
@@ -41,7 +45,8 @@ export function verifyUpload(key) {
 
 export function merge(fileInfo) {
   return request({
-    url: '/user/merge',
+    baseURL: api,
+    url: '/merge',
     method: 'POST',
     data: {
       Name: fileInfo.name,
@@ -55,7 +60,8 @@ export function merge(fileInfo) {
 
 export function cancel(key) {
   return request({
-    url: '/file/cancel',
+    baseURL: api,
+    url: '/cancel',
     method: 'GET',
     params: {
       Str: key
