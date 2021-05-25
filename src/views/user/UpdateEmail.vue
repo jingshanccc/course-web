@@ -23,7 +23,7 @@
 <script>
 import store from '@/store'
 import { validEmail } from '@/utils/validate'
-import { updateEmail, sendEmailCode } from '@/api/user'
+import { updateEmail, sendResetEmailCode } from '@/api/user'
 
 export default {
   props: {
@@ -92,7 +92,7 @@ export default {
         this.codeLoading = true
         this.buttonName = '验证码发送中'
         const _this = this
-        sendEmailCode(this.form.email).then(res => {
+        sendResetEmailCode(this.form.email).then(res => {
           if (res.success) {
             this.$message({
               showClose: true,

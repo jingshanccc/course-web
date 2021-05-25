@@ -23,11 +23,20 @@ export function authorize(loginUser) {
 }
 
 /**
- *  发送邮箱验证码
+ *  用户注册发送邮箱验证码
  */
 export function sendEmailCode(email) {
   return request({
     url: '/email-code?Str=' + email,
+    method: 'get'
+  })
+}
+/**
+ *  用户换绑邮箱发送验证码
+ */
+export function sendResetEmailCode(email) {
+  return request({
+    url: '/user/email-code?email=' + email,
     method: 'get'
   })
 }
@@ -108,7 +117,13 @@ export function updatePass(user) {
   })
 }
 
-export function updateEmail(data) {
+export function updateEmail(form) {
+  const data = {
+    pass: encrypt(form.pass),
+    email: form.email,
+    code: form.code,
+    isMember: true
+  }
   return request({
     url: 'user/update-email',
     method: 'POST',
