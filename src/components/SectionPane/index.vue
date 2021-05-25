@@ -83,20 +83,25 @@ export default {
       let charge
       if (c === -1) {
         charge = this.course.charge
+        c = 0
       } else {
         charge = this.course.chapters[c].sections[s].charge
       }
       this.routerData = { course: this.course, chapter: c, section: s, randomCode: new Date().getTime() }
       // 若章节免费则不登陆也可观看，付费则检查登陆状态，未登陆则弹出登陆/注册框，已登陆则进行购买课程确认
       if (charge === '免费') {
-        if (this.userInfo.id !== '') { // 已登录 记录进"我的课程"
+        if (this.userInfo.id !== '' && !this.course.learnInfo) { // 已登录 记录进"我的课程"
           this.addCourse()
         } else {
           openHref(this.$router, 'Learning', this.routerData, false)
         }
       } else {
-        if (this.userInfo.id !== '') { // 已登录
-          this.confirmBuyCourse()
+        if (this.userInfo.id) { // 已登录
+          if (this.course.learnInfo) {
+            openHref(this.$router, 'Learning', this.routerData, false)
+          } else {
+            this.confirmBuyCourse()
+          }
         } else {
           // 1. 弹窗登录 登录成功后 执行付费+已登录逻辑(afterLogin) 登录失败后什么都不做
           this.$refs.loginRegister.visible = true

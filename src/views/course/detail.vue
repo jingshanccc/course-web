@@ -71,7 +71,7 @@ export default {
     formatSecond,
     getCourse() {
       let learnInfo = []
-      if (this.userInfo.id !== '') {
+      if (this.userInfo.id) {
         courseInfo(this.course.id).then(res => {
           if (res.success && res.content.str) {
             learnInfo = res.content.str.split(' ')

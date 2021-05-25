@@ -52,7 +52,7 @@
                   <span style="color: #C0C0C0; margin-left: 10px;">用户昵称不作为登录使用</span>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
-                  <el-input v-model="form.email" style="width: 35%" />
+                  <el-input v-model="form.email" style="width: 35%" disabled />
                   <span style="color: #C0C0C0; margin-left: 10px;">邮箱不能重复</span>
                 </el-form-item>
                 <el-form-item label="性别">

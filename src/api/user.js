@@ -95,7 +95,12 @@ export function courses(id) {
   })
 }
 
-export function updatePass(data) {
+export function updatePass(user) {
+  const data = {
+    oldPass: encrypt(user.oldPass),
+    newPass: encrypt(user.newPass),
+    isMember: true
+  }
   return request({
     url: 'user/update-pass',
     method: 'POST',

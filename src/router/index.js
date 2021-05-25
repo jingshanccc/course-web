@@ -3,6 +3,7 @@ import store from '@/store'
 import Setting from '@/settings'
 import { getToken } from '@/utils/auth'
 
+const whiteList = ['/home', '/course/list', '/course/detail']
 route.beforeEach((to, from, next) => {
   if (to.meta.title) {
     document.title = to.meta.title + ' - ' + Setting.title
@@ -13,7 +14,7 @@ route.beforeEach((to, from, next) => {
     }
     next()
   } else {
-    if (to.path === '/home') {
+    if (whiteList.indexOf(to.path) !== -1 || to.path.indexOf('/learn') !== -1) {
       next()
     } else {
       next('/')
