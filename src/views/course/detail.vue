@@ -71,15 +71,13 @@ export default {
     formatSecond,
     getCourse() {
       let learnInfo = []
-      if (this.userInfo.id) {
-        courseInfo(this.course.id).then(res => {
-          if (res.success && res.content.str) {
-            learnInfo = res.content.str.split(' ')
-            this.learnInfoText = '上次学到：第' + learnInfo[0] + '章第' + learnInfo[1] + '节'
-            this.buttonText = '继续学习'
-          }
-        })
-      }
+      courseInfo(this.course.id).then(res => {
+        if (res.success && res.content.str) {
+          learnInfo = res.content.str.split(' ')
+          this.learnInfoText = '上次学到：第' + learnInfo[0] + '章第' + learnInfo[1] + '节'
+          this.buttonText = '继续学习'
+        }
+      })
       course(this.course.id).then(res => {
         if (res.success) {
           this.course = res.content

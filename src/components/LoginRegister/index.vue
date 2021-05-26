@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible.sync="visible" width="25%" append-to-body center>
+  <el-dialog :visible.sync="visible" width="35%" append-to-body center>
     <el-form
       ref="form"
       :model="form"

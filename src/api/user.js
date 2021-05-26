@@ -171,12 +171,9 @@ export function saveLearnInfo(id, info) {
   })
 }
 
-export function experience(id) {
+export function increaseIntegral() {
   return request({
-    url: 'user/experience',
-    method: 'POST',
-    data: {
-      Str: id
-    }
+    url: 'user/integral',
+    method: 'POST'
   })
 }

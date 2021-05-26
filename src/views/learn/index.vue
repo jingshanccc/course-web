@@ -11,7 +11,7 @@
         </el-menu>
       </el-col>
       <el-col :span="16">
-        <player ref="player" :player-options="options" />
+        <player ref="player" :player-options="options" :ended="finishSection" />
       </el-col>
       <el-col :span="6">
         <div class="teacher">
@@ -43,11 +43,13 @@
 </template>
 <script>
 import { downloadCourseContent } from '@/api/course'
-import { saveLearnInfo, experience } from '@/api/user'
+import { saveLearnInfo, increaseIntegral } from '@/api/user'
 import Player from '@/components/Player'
 import SectionPane from '@/components/SectionPane'
 import TeacherInfo from '@/components/TeacherInfo'
 import CoursePane from '@/components/CoursePane'
+import { mapGetters } from 'vuex'
+import { openHref } from '@/utils'
 export default {
   name: 'Learning',
   components: {
@@ -67,6 +69,11 @@ export default {
       options: {}
     }
   },
+  computed: {
+    ...mapGetters([
+      'userInfo'
+    ])
+  },
   created() {
     if (!this.$route.params.course) {
       this.$router.push({ name: 'Course' })
@@ -78,10 +85,16 @@ export default {
       type: 'video/mp4',
       src: this.section.video
     }]
-    this.startRecord()
+    if (this.userInfo.id) {
+      if (this.course.learnInfo.length !== 0) {
+        this.options.startTime = this.course.learnInfo[2]
+      }
+      this.startRecord()
+    }
   },
-  destroyed() {
+  beforeRouteLeave(to, from, next) {
     this.clearRecord()
+    next()
   },
   methods: {
     getCourseContent() {
@@ -95,23 +108,45 @@ export default {
       this.contentDrawer = true
     },
     startRecord() {
+      const _this = this
       this.timer = setInterval(function() {
-        this.addExperience()
-      }, 100000)
+        _this.saveInfo()
+      }, 5000)
     },
     clearRecord() {
       clearInterval(this.timer)
-      saveLearnInfo(this.course.id, this.chapter.sort + ' ' + this.section.sort + ' ' + this.$refs.player.curTime).then().catch()
+      this.saveInfo()
     },
-    addExperience() {
-      // 记录学习进度和发放积分分开 由于存在快进快退因此经验参照页面停留时间、积分在自动切换下一节时发放
-      // 学习进度在离开页面/章节切换时记录
-      console.log(this.$refs.player.curTime)
-      experience(this.course.id).then(res => {
+    saveInfo() {
+      saveLearnInfo(this.course.id, this.chapter.sort + ' ' + this.section.sort + ' ' + this.$refs.player.curTime)
+    },
+    finishSection() {
+      increaseIntegral().then(res => {
         if (res.success) {
-          this.$message('经验+10')
+          this.$message({
+            message: '积分+10',
+            type: 'success'
+          })
         }
       })
+      this.clearRecord()
+      let chapter = this.$route.params.chapter
+      let section = this.$route.params.section + 1
+      if (this.chapter.sections.length - 1 < section) {
+        console.log('no section')
+        section = 0
+        chapter += 1
+        if (this.course.chapters.length - 1 < chapter) {
+          console.log('no chapter')
+          this.$message({
+            message: '你已完成本课程的学习！',
+            type: 'success'
+          })
+          return
+        }
+      }
+      const routerData = { course: this.course, chapter: chapter, section: section, randomCode: new Date().getTime() }
+      openHref(this.$router, 'Learning', routerData, false)
     }
   }
 }

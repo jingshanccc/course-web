@@ -8,7 +8,7 @@
         </a>
       </el-col>
       <el-col :sm="14" class="search">
-        <search-box />
+        <!--        <search-box />-->
       </el-col>
       <el-col :sm="5">
         <el-dropdown v-if="userInfo.id" class="avatar-container hover-effect" placement="bottom-start">
@@ -38,15 +38,15 @@
 <script>
 import { mapGetters } from 'vuex'
 import Avatar from '@/assets/images/avatar.gif'
-import SearchBox from '@/layout/components/SearchBox'
+// import SearchBox from '@/layout/components/SearchBox'
 import LoginRegister from '@/components/LoginRegister'
 import Cookies from 'js-cookie'
 
 export default {
   name: 'NavBar',
   components: {
-    LoginRegister,
-    SearchBox
+    LoginRegister
+    // SearchBox
   },
   data() {
     return {

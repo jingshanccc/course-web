@@ -14,7 +14,7 @@
 </template>
 <script>
 import { formatSecond, openHref } from '@/utils'
-import { addCourse } from '@/api/user'
+import { addCourse, courseInfo } from '@/api/user'
 import { mapGetters } from 'vuex'
 import LoginRegister from '@/components/LoginRegister'
 export default {
@@ -56,23 +56,32 @@ export default {
     },
     // 弹窗确认购买
     confirmBuyCourse() {
-      this.$confirm('购买本课程需要花费' + this.course.price + '积分, 是否购买?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'success'
-      }).then(() => {
-        // 2-1. 确认后添加进我的课程 然后跳转到学习页面
-        this.$message({
-          type: 'success',
-          message: '购买成功!'
-        })
-        this.addCourse()
-      }).catch(() => {
-        // 2-2. 取消后啥也不干
-        this.$message({
-          type: 'info',
-          message: '取消购买'
-        })
+      courseInfo(this.course.id).then(res => {
+        if (res.success && res.content.str) {
+          this.course.learnInfo = res.content.str.split(' ')
+          if (this.course.learnInfo.length !== 0) {
+            openHref(this.$router, 'Learning', this.routerData, false)
+          }
+        } else {
+          this.$confirm('购买本课程需要花费' + this.course.price + '积分, 是否购买?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'success'
+          }).then(() => {
+            // 2-1. 确认后添加进我的课程 然后跳转到学习页面
+            this.$message({
+              type: 'success',
+              message: '购买成功!'
+            })
+            this.addCourse()
+          }).catch(() => {
+            // 2-2. 取消后啥也不干
+            this.$message({
+              type: 'info',
+              message: '取消购买'
+            })
+          })
+        }
       })
     },
     /**
@@ -97,11 +106,7 @@ export default {
         }
       } else {
         if (this.userInfo.id) { // 已登录
-          if (this.course.learnInfo) {
-            openHref(this.$router, 'Learning', this.routerData, false)
-          } else {
-            this.confirmBuyCourse()
-          }
+          this.confirmBuyCourse()
         } else {
           // 1. 弹窗登录 登录成功后 执行付费+已登录逻辑(afterLogin) 登录失败后什么都不做
           this.$refs.loginRegister.visible = true

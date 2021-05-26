@@ -7,6 +7,7 @@
 
     @play="onPlayerPlay($event)"
     @pause="onPlayerPause($event)"
+    @ended="onPlayerEnded($event)"
 
     @statechanged="playerStateChanged($event)"
     @ready="playerReadied"
@@ -35,7 +36,8 @@ export default {
             type: 'video/mp4',
             src: 'https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm'
           }],
-          poster: '/static/images/author.jpg'
+          poster: '/static/images/author.jpg',
+          startTime: 0
         }
       }
     },
@@ -44,6 +46,14 @@ export default {
       default: null
     },
     paused: {
+      type: Function,
+      default: null
+    },
+    ready: {
+      type: Function,
+      default: null
+    },
+    ended: {
       type: Function,
       default: null
     }
@@ -65,11 +75,15 @@ export default {
     // listen event
     onPlayerPlay(player) {
       // console.log('player play!', player)
-      this.play()
+      // this.play()
     },
     onPlayerPause(player) {
-      this.paused()
+      // this.paused()
       // console.log('player pause!', player)
+    },
+    onPlayerEnded(player) {
+      // console.log('player ended!', player)
+      this.ended()
     },
     // ...player event
 
@@ -81,6 +95,7 @@ export default {
     // player is ready
     playerReadied(player) {
       console.log('the player is readied', player)
+      player.currentTime(this.playerOptions.startTime)
       // you can use it to do something...
       // player.[methods]
     },
